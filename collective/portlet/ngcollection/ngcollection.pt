@@ -1,0 +1,20 @@
+<dl class="portlet portletNGCollection"
+    i18n:domain="collective.portlet.ngcollection">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        Header
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <dd class="portletItem odd">
+        Body text
+    </dd>
+
+    <dd class="portletFooter">
+        <span class="portletBottomLeft"></span>
+        Footer
+        <span class="portletBottomRight"></span>
+    </dd>
+
+</dl>

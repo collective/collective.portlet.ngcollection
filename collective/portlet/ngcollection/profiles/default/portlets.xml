@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<portlets>
+
+ <!-- Portlet type registrations -->
+
+ <portlet
+   addview="collective.portlet.ngcollection.NGCollection"
+   title="NG Collection"
+   description="Extends plone collection portlet in order to allow assigning different views for each newly created portlet through it's edit form"
+   />
+
+</portlets>

@@ -1,0 +1,36 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="collective.portlet.ngcollection">
+
+    <five:registerPackage package="." initialize=".initialize" />
+
+    <genericsetup:registerProfile
+       name="default"
+       title="NG Collection"
+       directory="profiles/default"
+       description="Extends plone collection portlet in order to allow assigning different views for each newly created portlet through it's edit form"
+       provides="Products.GenericSetup.interfaces.EXTENSION"
+       />
+
+     <!-- Register the portlet -->
+
+     <!-- If the portlet has no configurable parameters, you can remove
+          the EditForm declaration in ngcollection.py and delete
+          the 'editview' attribute from this statement.
+       -->
+
+     <plone:portlet
+         name="collective.portlet.ngcollection.NGCollection"
+         interface=".ngcollection.INGCollection"
+         assignment=".ngcollection.Assignment"
+         view_permission="zope2.View"
+         edit_permission="cmf.ManagePortal"
+         renderer=".ngcollection.Renderer"
+         addview=".ngcollection.AddForm"
+         editview=".ngcollection.EditForm"
+         />
+
+</configure>
