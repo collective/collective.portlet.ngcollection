@@ -1,7 +1,8 @@
 from zope.interface import implements
 
 from plone.portlets.interfaces import IPortletDataProvider
-from plone.app.portlets.portlets import base
+from plone.portlet.collection import collection as base
+from plone.app.form.widgets.uberselectionwidget import UberSelectionWidget
 
 from zope import schema
 from zope.formlib import form
@@ -10,7 +11,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from collective.portlet.ngcollection import NGCollectionMessageFactory as _
 
 
-class INGCollection(IPortletDataProvider):
+class INGCollection(base.ICollectionPortlet):
     """A portlet
 
     It inherits from IPortletDataProvider because for this portlet, the
@@ -18,14 +19,18 @@ class INGCollection(IPortletDataProvider):
     same.
     """
 
-    # TODO: Add any zope.schema fields here to capture portlet configuration
-    # information. Alternatively, if there are no settings, leave this as an
-    # empty interface - see also notes around the add form and edit form
-    # below.
-
-    # some_field = schema.TextLine(title=_(u"Some field"),
-    #                              description=_(u"A field to use"),
-    #                              required=True)
+    view_name = schema.TextLine(
+        title=_(u"View name"),
+        description=_(u"View name to use for portlet rendering. If not set or "
+                      u"not found then default one will be used."),
+        default=u"",
+        required=False)
+    
+    show_more_label = schema.TextLine(
+        title=_(u"Show More Label"),
+        description=_(u"Label for Show More link"),
+        default=u"",
+        required=False)
 
 
 class Assignment(base.Assignment):
@@ -36,24 +41,16 @@ class Assignment(base.Assignment):
     """
 
     implements(INGCollection)
+    
+    show_more_label = u""
 
-    # TODO: Set default values for the configurable parameters here
-
-    # some_field = u""
-
-    # TODO: Add keyword parameters for configurable parameters here
-    # def __init__(self, some_field=u""):
-    #    self.some_field = some_field
-
-    def __init__(self):
-        pass
-
-    @property
-    def title(self):
-        """This property is used to give the title of the portlet in the
-        "manage portlets" screen.
-        """
-        return "NG Collection"
+    def __init__(self, header=u"", target_collection=None, limit=None,
+                 random=False, show_more=True, show_dates=False,
+                 show_more_label=u""):
+        super(Assignment, self).__init__(header=header, limit=limit,
+            target_collection=target_collection, random=random,
+            show_more=show_more, show_dates=show_dates)
+        self.show_more_label = show_more_label
 
 
 class Renderer(base.Renderer):
@@ -64,8 +61,10 @@ class Renderer(base.Renderer):
     of this class. Other methods can be added and referenced in the template.
     """
 
-    render = ViewPageTemplateFile('ngcollection.pt')
-
+    _template = ViewPageTemplateFile('ngcollection.pt')
+    
+    def show_more_label(self):
+        return self.data.show_more_label or u"More&hellip;"
 
 class AddForm(base.AddForm):
     """Portlet add form.
@@ -75,25 +74,15 @@ class AddForm(base.AddForm):
     constructs the assignment that is being added.
     """
     form_fields = form.Fields(INGCollection)
+    form_fields['target_collection'].custom_widget = UberSelectionWidget
+    
+    label = _(u"Add NG Collection Portlet")
+    description = _(u"This portlet extends standard plone collection portlet "
+                    u"with two more extra fields: view_name and "
+                    u"show_more_label")
 
     def create(self, data):
         return Assignment(**data)
-
-
-# NOTE: If this portlet does not have any configurable parameters, you
-# can use the next AddForm implementation instead of the previous.
-
-# class AddForm(base.NullAddForm):
-#     """Portlet add form.
-#     """
-#     def create(self):
-#         return Assignment()
-
-
-# NOTE: If this portlet does not have any configurable parameters, you
-# can remove the EditForm class definition and delete the editview
-# attribute from the <plone:portlet /> registration in configure.zcml
-
 
 class EditForm(base.EditForm):
     """Portlet edit form.
@@ -102,3 +91,9 @@ class EditForm(base.EditForm):
     zope.formlib which fields to display.
     """
     form_fields = form.Fields(INGCollection)
+    form_fields['target_collection'].custom_widget = UberSelectionWidget
+    
+    label = _(u"Edit NG Collection Portlet")
+    description = _(u"This portlet extends standard plone collection portlet "
+                    u"with two more extra fields: view_name and "
+                    u"show_more_label")

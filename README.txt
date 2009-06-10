@@ -8,7 +8,7 @@ edit form.
 This is often required to have many collection portlets displaying different
 information in different places. Plone portlets provide us with portletRenderer
 directive which in general is really usefull, but it's not an option because it
-overrides portlet renderer globally thus allowing to have only one template at 
+overrides portlet renderer globally thus allowing to have only one template at
 a time.
 
 So to avoid having some odd conditions in your collection portlet's template
@@ -17,9 +17,10 @@ View name is a name of some traversable object which will be called without any
 parameters to retrieve html output.
 
 Thus view can be a content object, a skins template, a zope3 browser view or
-any other zope traversable object. This view can count on a 'view' binding
-variable which is a reference to portlet renderer.
+any other zope traversable object (if there are some name collision then view
+name will be looked up in that order). This view can count on a 'view' binding
+variable which is a reference to a portlet renderer.
 
-Apart from the 'view_name' field NGCollection portlet also adds 'more_label'
-field. This field is here to override default collection's portlet
-'Show more...' link text with some custom one entered by user.
+Apart from the 'view_name' field NGCollection portlet also adds
+'show_more_label' field. This field is here to override default collection's
+portlet 'More...' link text with some custom one entered by user.

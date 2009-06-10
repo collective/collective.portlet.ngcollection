@@ -5,6 +5,8 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="collective.portlet.ngcollection">
 
+    <include package="plone.portlet.collection" />
+
     <five:registerPackage package="." initialize=".initialize" />
 
     <genericsetup:registerProfile
