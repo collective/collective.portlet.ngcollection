@@ -27,6 +27,6 @@ def handler(directory, interface):
     
 def portletTemplatesDirective(_context, directory, interface):
     _context.action(
-        discriminator = ('override', directory, interface),
+        discriminator = ('portletTemplates', directory, interface),
         callable = handler,
         args = (directory, interface))
