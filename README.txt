@@ -23,8 +23,8 @@ portlet 'More...' link text with some custom one entered by user.
 Portlet Templates
 -----------------
 
-In order to register new alternative templates for you portlet this packages
-provides portletTemplates directive (plone namespace)::
+In order to register new alternative templates for your portlet this package
+provides portletTemplates directive::
 
     <configure
         xmlns="http://namespaces.zope.org/zope"

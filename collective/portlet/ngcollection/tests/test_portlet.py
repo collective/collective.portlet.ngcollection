@@ -1,3 +1,5 @@
+from os import path
+
 from zope.component import getUtility, getMultiAdapter
 
 from plone.portlets.interfaces import IPortletType
@@ -8,6 +10,8 @@ from plone.portlets.interfaces import IPortletRenderer
 from plone.app.portlets.storage import PortletAssignmentMapping
 
 from Products.CMFCore.utils import getToolByName
+from Products.Five import zcml
+from Products.Five import fiveconfigure
 
 from collective.portlet.ngcollection import ngcollection
 from collective.portlet.ngcollection.tests.base import TestCase
@@ -123,6 +127,47 @@ class TestRenderer(TestCase):
         collectionrenderer = self.renderer(context=None, request=None,
             view=None, manager=None, assignment=mapping['buz'])
         self.assertEquals(collectionrenderer.show_more_label(), 'View more')
+    
+    def test_template(self):
+        # test default template
+        r = self.renderer(context=self.portal,
+                          assignment=ngcollection.Assignment(header=u"title",
+                          target_collection='/Members/test_user_1_/collection'))
+        r = r.__of__(self.folder)
+        r.update()
+        output = r.render()
+        self.failUnless('portletCollection' in output)
+        
+        # test assigned custom testing template
+        # register portlet templates directory with alternative template
+        dir_path = path.join(path.dirname(__file__), 'templates')
+        zcml_string = """
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone">
+
+  <include package="collective.portlet.ngcollection" file="meta.zcml" />
+
+  <plone:portletTemplates
+      interface="collective.portlet.ngcollection.ngcollection.INGCollection"
+      directory="%s"
+  />
+
+</configure>
+        """ % dir_path
+        fiveconfigure.debug_mode = True
+        zcml.load_string(zcml_string)
+        fiveconfigure.debug_mode = False
+        
+        t_path = path.join(dir_path, 'test.pt')
+        r = self.renderer(context=self.portal,
+                          assignment=ngcollection.Assignment(header=u"title",
+            target_collection='/Members/test_user_1_/collection',
+            template=t_path))
+        r = r.__of__(self.folder)
+        r.update()
+        output = r.render()
+        self.failUnless('This is a test template!' in output)
 
 class TestCollectionQuery(TestCase):
     """This TestCase was simply copied from plone.portlet.collection portlet

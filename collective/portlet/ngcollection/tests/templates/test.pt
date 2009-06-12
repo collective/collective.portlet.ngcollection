@@ -1,0 +1,2 @@
+<h1>This is a test template!</h1>
+<p tal:content="view/data/header">Portlet Header</p>
