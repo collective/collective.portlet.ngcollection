@@ -16,23 +16,23 @@
        description="Extends plone collection portlet in order to allow assigning different views for each newly created portlet through it's edit form"
        provides="Products.GenericSetup.interfaces.EXTENSION"
        />
-
-     <!-- Register the portlet -->
-
-     <!-- If the portlet has no configurable parameters, you can remove
-          the EditForm declaration in ngcollection.py and delete
-          the 'editview' attribute from this statement.
-       -->
-
-     <plone:portlet
-         name="collective.portlet.ngcollection.NGCollection"
-         interface=".ngcollection.INGCollection"
-         assignment=".ngcollection.Assignment"
-         view_permission="zope2.View"
-         edit_permission="cmf.ManagePortal"
-         renderer=".ngcollection.Renderer"
-         addview=".ngcollection.AddForm"
-         editview=".ngcollection.EditForm"
-         />
+    
+    <!-- Register the portlet -->
+    <plone:portlet
+        name="collective.portlet.ngcollection.NGCollection"
+        interface=".ngcollection.INGCollection"
+        assignment=".ngcollection.Assignment"
+        view_permission="zope2.View"
+        edit_permission="cmf.ManagePortal"
+        renderer=".ngcollection.Renderer"
+        addview=".ngcollection.AddForm"
+        editview=".ngcollection.EditForm"
+        />
+    
+    <!-- Register the vocabularies -->
+    <utility
+        factory=".vocabularies.PortletTemplates"
+        name="collective.portlet.ngcollection.PortletTemplates"
+        />
 
 </configure>

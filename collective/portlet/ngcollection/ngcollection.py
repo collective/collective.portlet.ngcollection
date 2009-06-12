@@ -1,15 +1,19 @@
+import os
+from zope import schema
+from zope.formlib import form
 from zope.interface import implements
+from zope.component import queryAdapter
 
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.portlet.collection import collection as base
 from plone.app.form.widgets.uberselectionwidget import UberSelectionWidget
 
-from zope import schema
-from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
-from collective.portlet.ngcollection import NGCollectionMessageFactory as _
 
+from collective.portlet.ngcollection.manager import getPortletTemplateManagers
+from collective.portlet.ngcollection import NGCollectionMessageFactory as _
+from collective.portlet.ngcollection.interfaces import IPortletTemplateManager
 
 class INGCollection(base.ICollectionPortlet):
     """A portlet
@@ -19,12 +23,13 @@ class INGCollection(base.ICollectionPortlet):
     same.
     """
 
-    view_name = schema.TextLine(
-        title=_(u"View name"),
-        description=_(u"View name to use for portlet rendering. If not set or "
-                      u"not found then default one will be used."),
+    template = schema.Choice(
+        title=_(u"Template"),
+        description=_(u"Template to use for portlet rendering. If not set "
+                      u"then default one will be used."),
+        required=False,
         default=u"",
-        required=False)
+        vocabulary='collective.portlet.ngcollection.PortletTemplates')
     
     show_more_label = schema.TextLine(
         title=_(u"Show More Label"),
@@ -42,14 +47,16 @@ class Assignment(base.Assignment):
 
     implements(INGCollection)
     
+    template = u""
     show_more_label = u""
 
     def __init__(self, header=u"", target_collection=None, limit=None,
                  random=False, show_more=True, show_dates=False,
-                 show_more_label=u""):
+                 template=u"", show_more_label=u""):
         super(Assignment, self).__init__(header=header, limit=limit,
             target_collection=target_collection, random=random,
             show_more=show_more, show_dates=show_dates)
+        self.template = template
         self.show_more_label = show_more_label
 
 
@@ -65,6 +72,16 @@ class Renderer(base.Renderer):
     
     def show_more_label(self):
         return self.data.show_more_label or u"More&hellip;"
+    
+    def render(self):
+        template = self._template
+        path = self.data.template
+        if path:
+            for manager in getPortletTemplateManagers(self.data):
+                if manager.hasTemplate(path):
+                    template = manager.getTemplate(path).__of__(self)
+                    break
+        return template()
 
 class AddForm(base.AddForm):
     """Portlet add form.

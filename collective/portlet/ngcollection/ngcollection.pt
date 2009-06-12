@@ -39,8 +39,7 @@
         <span class="portletBottomLeft"></span>
         <span>
         <a tal:attributes="href collection_url"
-           tal:content="structure view/show_more_label"
-           i18n:translate="more_url">
+           tal:content="structure view/show_more_label">
              More&hellip;
              </a>
         </span>

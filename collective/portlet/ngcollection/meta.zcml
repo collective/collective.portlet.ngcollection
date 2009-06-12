@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:meta="http://namespaces.zope.org/meta">
+
+    <meta:directives namespace="http://namespaces.plone.org/plone">
+
+        <meta:directive
+            name="portletTemplates"
+            schema=".metadirectives.IPortletTemplatesDirective"
+            handler=".metaconfigure.portletTemplatesDirective"
+            />
+
+    </meta:directives>
+
+</configure>

@@ -11,16 +11,40 @@ directive which in general is really usefull, but it's not an option because it
 overrides portlet renderer globally thus allowing to have only one template at
 a time.
 
-So to avoid having some odd conditions in your collection portlet's template
-NGCollection extends standard plone collection portlet with view_name field.
-View name is a name of some traversable object which will be called without any
-parameters to retrieve html output.
+Thus to avoid having some odd conditions in your collection portlet's template
+NGCollection extends standard plone collection portlet with a template field
+where you can select template to use from available templates.
 
-Thus view can be a content object, a skins template, a zope3 browser view or
-any other zope traversable object (if there are some name collision then view
-name will be looked up in that order). This view can count on a 'view' binding
-variable which is a reference to a portlet renderer.
-
-Apart from the 'view_name' field NGCollection portlet also adds
+Apart from the 'template' field NGCollection portlet also adds
 'show_more_label' field. This field is here to override default collection's
 portlet 'More...' link text with some custom one entered by user.
+
+
+Portlet Templates
+-----------------
+
+In order to register new alternative templates for you portlet this packages
+provides portletTemplates directive (plone namespace)::
+
+    <configure
+        xmlns="http://namespaces.zope.org/zope"
+        xmlns:plone="http://namespaces.plone.org/plone">
+
+      <include package="collective.portlet.ngcollection" file="meta.zcml" />
+
+      <plone:portletTemplates
+          interface="path.to.some.portlet.assignment.Interface"
+          directory="alternative_templates"
+          />
+
+    </configure>
+
+In this example we register templates contained inside alternative_templates
+folder as alternative templates available for path.to.some.portlet.assignment.
+Interface portlet. Thus you'll be able to select one of them on portlet edit
+form via Plone interface.
+
+You can register more than one directory for your portlet.
+
+This idea with registering directories with custom templates was highly inspired
+by z3c.jbot package.
