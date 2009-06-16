@@ -24,9 +24,9 @@ class PortletTemplateManager(object):
     def registerDirectory(self, directory):
         """See interface"""
         for filename in os.listdir(directory):
-            if filename.endswith('.pt'):
+            if len(filename) > 3 and filename.endswith('.pt'):
                 path = "%s/%s" % (directory, filename)
-                self._templates[path] = (filename, ViewPageTemplateFile(path))
+                self._templates[path] = (filename[:-3], ViewPageTemplateFile(path))
 
     def unregisterDirectory(self, directory):
         """See interface"""
