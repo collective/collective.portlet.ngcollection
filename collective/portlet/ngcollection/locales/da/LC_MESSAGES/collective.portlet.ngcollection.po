@@ -1,0 +1,55 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2010-05-04 14:35+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: da\n"
+"Language-Name: Danish\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: collective.portlet.ngcollection\n"
+
+#: ./ngcollection.py:96
+msgid "Add NG Collection Portlet"
+msgstr "Tilføj NG dynamisk liste"
+
+#: ./ngcollection.py:113
+msgid "Edit NG Collection Portlet"
+msgstr "Rediger NG dynamisk liste"
+
+#: ./ngcollection.py:36
+msgid "Label for Show More link"
+msgstr "Titel for Læs mere link"
+
+#: ./metadirectives.py:15
+msgid "Portlet type interface"
+msgstr ""
+
+#: ./metadirectives.py:16
+msgid "Should correspond to the public interface of the portlet assignment"
+msgstr ""
+
+#: ./ngcollection.py:35
+msgid "Show More Label"
+msgstr "Vis mere-titel"
+
+#: ./ngcollection.py:27
+msgid "Template"
+msgstr "Skabelon"
+
+#: ./ngcollection.py:28
+msgid "Template to use for portlet rendering. If not set then default one will be used."
+msgstr "Den skabelon, som skal bruges til at vise portletten. Hvis der ikke er valgt nogen, bliver standard-skabelonen brugt."
+
+#: ./ngcollection.py:97
+msgid "This portlet extends standard plone collection portlet with two more extra fields: view_name and show_more_label"
+msgstr "Denne portlet udvider Plones indbyggede Dynamisk liste portlet med to ekstra felter: Skabelon og Vis mere-titel"
+
