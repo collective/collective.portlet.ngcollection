@@ -79,6 +79,8 @@ class Renderer(base.Renderer):
         if path:
             for manager in getPortletTemplateManagers(self.data):
                 if manager.hasTemplate(path):
+                    if not hasattr(manager.getTemplate(path),'__of__'):
+                        return manager.getTemplate(path)(self) # for Plone 4
                     template = manager.getTemplate(path).__of__(self)
                     break
         return template()
