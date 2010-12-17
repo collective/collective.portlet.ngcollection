@@ -7,6 +7,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from collective.portlet.ngcollection.interfaces import IPortletTemplateManager
 
+from Products.CMFCore.FSMetadata import FSMetadata
 
 class PortletTemplateManagerFactory(object):
     def __init__(self):
@@ -26,7 +27,12 @@ class PortletTemplateManager(object):
         for filename in os.listdir(directory):
             if len(filename) > 3 and filename.endswith('.pt'):
                 path = "%s/%s" % (directory, filename)
-                self._templates[path] = (filename[:-3], ViewPageTemplateFile(path))
+                metadata = FSMetadata(path)
+                metadata.read()
+                properties = metadata.getProperties()
+                title = properties.get('title', filename[:-3])
+                self._templates[path] = (title.decode('utf-8'),
+                                         ViewPageTemplateFile(path))
 
     def unregisterDirectory(self, directory):
         """See interface"""
