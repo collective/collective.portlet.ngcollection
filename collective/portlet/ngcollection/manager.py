@@ -7,6 +7,7 @@ from zope.component import getGlobalSiteManager
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from collective.portlet.ngcollection.interfaces import IPortletTemplateManager
+from collective.portlet.ngcollection import migration
 
 from Products.CMFCore.FSMetadata import FSMetadata
 
@@ -52,6 +53,7 @@ class PortletTemplateManager(object):
                 title = properties.get('title', filename[:-3])
                 self._templates[tmplkey] = (title.decode('utf-8'),
                                         ViewPageTemplateFile(path))
+                migration.add_to_migration_map(tmplkey, path)
 
     def unregisterDirectory(self, directory, package):
         """See interface"""
@@ -85,4 +87,7 @@ def getPortletTemplateManagers(obj):
     """
     gsm = getGlobalSiteManager()
     for name, adapter in gsm.getAdapters((obj,), IPortletTemplateManager):
+        if migration.DO_MIGRATE:
+            migration.migrate(obj, adapter)
         yield adapter
+
