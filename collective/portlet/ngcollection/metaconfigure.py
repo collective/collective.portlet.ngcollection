@@ -4,7 +4,7 @@ from zope import component
 from collective.portlet.ngcollection import manager
 from collective.portlet.ngcollection.interfaces import IPortletTemplateManager
 
-def handler(directory, interface):
+def handler(directory, interface, package):
     gsm = component.getGlobalSiteManager()
 
     # check if a portlet template manager already exists
@@ -16,17 +16,20 @@ def handler(directory, interface):
     base_factories = set(factory for name, factory in gsm.adapters.lookupAll(
         (implementedBy(interface.__bases__),), IPortletTemplateManager))
 
+    dirkey = manager.getDirKey(package, directory)
     try:
         factory = factories.difference(base_factories).pop()
     except KeyError:
         factory = manager.PortletTemplateManagerFactory()
         component.provideAdapter(
-            factory, (interface,), IPortletTemplateManager, name=directory)
+            factory, (interface,), IPortletTemplateManager, name=dirkey)
 
-    factory(interface).registerDirectory(directory)
-    
+    factory(interface).registerDirectory(directory, package)
+
+   
 def portletTemplatesDirective(_context, directory, interface):
+    package = _context.package
     _context.action(
-        discriminator = ('portletTemplates', directory, interface),
+        discriminator = ('portletTemplates', directory, interface, package),
         callable = handler,
-        args = (directory, interface))
+        args = (directory, interface, package ))

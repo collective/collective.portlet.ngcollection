@@ -160,6 +160,7 @@ class TestRenderer(TestCase):
         fiveconfigure.debug_mode = False
         
         t_path = path.join(dir_path, 'test.pt')
+        t_path = "%s:%s" % (dir_path, 'test.pt')
         r = self.renderer(context=self.portal,
                           assignment=ngcollection.Assignment(header=u"title",
             target_collection='/Members/test_user_1_/collection',
