@@ -4,7 +4,8 @@
     * migrator, which find proper template key (new) and
       replace in object old (file systeme dependent) to new one
 
-  To turn-on migration you should set DO_MIGRATE constant into True value.
+  To turn-on migration you should set DO_MIGRATE constant into True value
+  and vice-versa.
   Migration will be performed automatically on portlets rendering.
 """
 
@@ -14,8 +15,8 @@ import logging
 logger = logging.getLogger("collective.portlet.ngcollection")
 
 
-DO_MIGRATE = False
-#DO_MIGRATE = True
+#DO_MIGRATE = False
+DO_MIGRATE = True
 
 SEPEXPR = re.compile(r"[/\\]")
 MIGRATION_MAP = {}
@@ -80,10 +81,14 @@ def addToMM(head, keytail, branch):
 ###########
 
 def migrate(obj, adapter):
-    template = obj.template
-    if isOldFashionKey(template):
-        new_template = getNewFashionKey(template)
-        obj.template = new_template
+    try:
+        template = obj.template
+        if isOldFashionKey(template):
+            new_template = getNewFashionKey(template)
+            obj.template = new_template
+    except:
+        logger.warn("Problem when try to migrate from file-system bind "
+            "template key to fs-independent for obj: %s" % str(obj))
 
 def isOldFashionKey(template):
     # Check is path starts as path from the root in
