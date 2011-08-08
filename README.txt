@@ -48,3 +48,11 @@ You can register more than one directory for your portlet.
 
 This idea with registering directories with custom templates was highly inspired
 by z3c.jbot package.
+
+Contributors
+------------
+
+ * Vitaliy Podoba
+ * Roman Kozlovskiy
+ * Volodymyr Cherepanyak
+

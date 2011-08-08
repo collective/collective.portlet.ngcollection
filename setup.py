@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.1'
+version = '1.0'
 
 setup(name='collective.portlet.ngcollection',
       version=version,
@@ -15,8 +15,8 @@ setup(name='collective.portlet.ngcollection',
         "Topic :: Software Development :: Libraries :: Python Modules",
         ],
       keywords='plone portlet collection',
-      author='Vitaliy Podoba',
-      author_email='piv@quintagroup.com',
+      author='Quintagroup',
+      author_email='support@quintagroup.com',
       url='http://dev.plone.org/collective/browser/collective.portlet.ngcollection',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
