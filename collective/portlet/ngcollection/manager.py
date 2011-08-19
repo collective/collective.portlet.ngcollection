@@ -1,4 +1,5 @@
 import os
+import re
 
 from zope.interface import implements
 from zope.component import getGlobalSiteManager
@@ -6,8 +7,24 @@ from zope.component import getGlobalSiteManager
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from collective.portlet.ngcollection.interfaces import IPortletTemplateManager
+from collective.portlet.ngcollection import migration
 
 from Products.CMFCore.FSMetadata import FSMetadata
+
+osjoin = os.path.join
+
+def getDirKey(package, directory):
+    if package is not None:
+        packpath = package.__path__[0]
+        reldir = directory[len(packpath):].strip('/\\')
+        # bind-out from OS separators
+        '/'.join(reldir.split(os.sep))
+        return "%s-%s" % (package.__name__, reldir)
+    else:
+        return directory
+
+def getTemplateKey(dirkey, filename):
+    return ":".join([dirkey, filename])
 
 class PortletTemplateManagerFactory(object):
     def __init__(self):
@@ -16,28 +33,36 @@ class PortletTemplateManagerFactory(object):
     def __call__(self, layer):
         return self.manager
 
+
 class PortletTemplateManager(object):
     implements(IPortletTemplateManager)
 
     def __init__(self):
         self._templates = {}
 
-    def registerDirectory(self, directory):
+    def registerDirectory(self, directory, package):
         """See interface"""
+        dirkey = getDirKey(package, directory)
         for filename in os.listdir(directory):
             if len(filename) > 3 and filename.endswith('.pt'):
-                path = "%s/%s" % (directory, filename)
+                path = osjoin(directory, filename)
+                tmplkey = getTemplateKey(dirkey, filename)
                 metadata = FSMetadata(path)
                 metadata.read()
                 properties = metadata.getProperties()
                 title = properties.get('title', filename[:-3])
-                self._templates[path] = (title.decode('utf-8'),
-                                         ViewPageTemplateFile(path))
+                self._templates[tmplkey] = (title.decode('utf-8'),
+                                        ViewPageTemplateFile(path))
+                migration.add_to_migration_map(tmplkey, path)
 
-    def unregisterDirectory(self, directory):
+    def unregisterDirectory(self, directory, package):
         """See interface"""
+        # HOOK: Generate remove key by passing directory key with
+        #       EMPTY FILE NAME to getTemplateKey function
+        rmkey = getTemplateKey(getDirKey(package, directory), "")
         for path, template in self.templates.items():
-            del self._templates[path]
+            if path.startswith(rmkey):
+                del self._templates[path]
 
     def hasTemplate(self, path):
         """See interface"""
@@ -62,4 +87,7 @@ def getPortletTemplateManagers(obj):
     """
     gsm = getGlobalSiteManager()
     for name, adapter in gsm.getAdapters((obj,), IPortletTemplateManager):
+        if migration.DO_MIGRATE:
+            migration.migrate(obj, adapter)
         yield adapter
+
