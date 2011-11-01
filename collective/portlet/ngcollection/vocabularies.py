@@ -2,12 +2,16 @@ from zope.interface import implements
 from zope.component import queryUtility
 from zope.component.interfaces import IFactory
 from zope.app.container.interfaces import IAdding
-from zope.app.schema.vocabulary import IVocabularyFactory
+
+try:
+    from zope.schema.interfaces import IVocabularyFactory
+except ImportError:
+    from zope.app.schema.vocabulary import IVocabularyFactory
+
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 
 from collective.portlet.ngcollection.manager import getPortletTemplateManagers
-from collective.portlet.ngcollection.interfaces import IPortletTemplateManager
-from collective.portlet.ngcollection import NGCollectionMessageFactory as _
+
 
 class PortletTemplates(object):
 
@@ -27,6 +31,7 @@ class PortletTemplates(object):
                     except Exception, e:
                         # no luck, perhaps factory needs some arguments
                         pass
+
         items = []
         for manager in getPortletTemplateManagers(context):
             items.extend([SimpleTerm(value, value, title)
