@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.2 (2012-01-23)
+----------------
+
+ * Fixed import deprecation and removed unused imports
+
 1.1 (2011-08-19)
 ----------------
 
