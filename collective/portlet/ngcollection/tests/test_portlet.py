@@ -236,12 +236,13 @@ class TestCollectionQuery(TestCase):
         # of scenarios to make sure they work
         
         # set up our portlet renderer
-        mapping = PortletAssignmentMapping()
-        request = self.folder.REQUEST
-        mapping['foo'] = ngcollection.Assignment(header=u"title", random=True,
-            target_collection='/Members/test_user_1_/collection')
-        collectionrenderer = self.renderer(context=None, request=None,
-            view=None, manager=None, assignment=mapping['foo'])
+        def results(limit=None):
+            mapping = PortletAssignmentMapping()
+            request = self.folder.REQUEST
+            mapping['foo'] = ngcollection.Assignment(header=u"title", random=True,
+                target_collection='/Members/test_user_1_/collection', limit=limit)
+            return self.renderer(context=None, request=None,
+                view=None, manager=None, assignment=mapping['foo']).results()
 
         # add some folders
         for i in range(6):
@@ -249,7 +250,7 @@ class TestCollectionQuery(TestCase):
             getattr(self.folder, 'folder_%s'%i).reindexObject()
 
         # collection with no criteria -- should return empty list, without error
-        self.assertEqual(len(collectionrenderer.results()), 0)
+        self.assertEqual(len(results()), 0)
 
         # let's make sure the results aren't being memoized
         old_func = self.folder.collection.queryCatalog
@@ -259,7 +260,7 @@ class TestCollectionQuery(TestCase):
             global collection_was_called
             collection_was_called = True
         self.folder.collection.queryCatalog = mark_collection_called
-        collectionrenderer.results()
+        results()
         self.folder.collection.queryCatalog = old_func
         self.failUnless(collection_was_called)
         
@@ -267,28 +268,26 @@ class TestCollectionQuery(TestCase):
         crit = self.folder.collection.addCriterion('portal_type',
             'ATSimpleStringCriterion')
         crit.setValue('Folder')
-        self.assertEqual(len(collectionrenderer.results()), 1)
+        self.assertEqual(len(results()), 1)
         
         # collection with multiple criteria -- should behave similarly
         crit = self.folder.collection.addCriterion('Creator',
             'ATSimpleStringCriterion')
         crit.setValue('test_user_1_')
-        collectionrenderer.results()
+        results()
         
         # collection with sorting -- should behave similarly
         # (sort is ignored internally)
         self.folder.collection.setSortCriterion('modified', False)
-        self.assertEqual(len(collectionrenderer.results()), 1)
+        self.assertEqual(len(results()), 1)
         
         # same criteria, now with limit set to 2 -- should return 2 (random)
         # folders
-        collectionrenderer.data.limit = 2
-        self.assertEqual(len(collectionrenderer.results()), 2)
+        self.assertEqual(len(results(limit=2)), 2)
         
         # make sure there's no error if the limit is greater than the # of
         # results found
-        collectionrenderer.data.limit = 10
-        self.failUnless(len(collectionrenderer.results()) >= 6)
+        self.failUnless(len(results(limit=10)) >= 6)
 
 
 def test_suite():
