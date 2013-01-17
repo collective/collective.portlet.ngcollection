@@ -1,7 +1,11 @@
 from zope.interface import implements
 from zope.component import queryUtility
 from zope.component.interfaces import IFactory
-from zope.app.container.interfaces import IAdding
+
+try:
+    from zope.browser.interfaces import IAdding
+except ImportError:
+    from zope.app.container.interfaces import IAdding
 
 try:
     from zope.schema.interfaces import IVocabularyFactory
