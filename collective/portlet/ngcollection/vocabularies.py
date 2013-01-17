@@ -39,5 +39,5 @@ class PortletTemplates(object):
         items = []
         for manager in getPortletTemplateManagers(context):
             items.extend([SimpleTerm(value, value, title)
-                for value, title in manager.getTemplatesForVocab()])
+                          for value, title in manager.getTemplatesForVocab()])
         return SimpleVocabulary(items)

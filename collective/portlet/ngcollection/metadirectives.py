@@ -3,6 +3,7 @@ from zope.configuration import fields
 
 from collective.portlet.ngcollection import NGCollectionMessageFactory as _
 
+
 class IPortletTemplatesDirective(Interface):
     """Directive which registers a directory with templates for the given
     portlet type."""

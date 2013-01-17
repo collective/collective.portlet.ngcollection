@@ -13,6 +13,7 @@ from Products.CMFCore.FSMetadata import FSMetadata
 
 osjoin = os.path.join
 
+
 def getDirKey(package, directory):
     if package is not None:
         packpath = package.__path__[0]
@@ -23,8 +24,10 @@ def getDirKey(package, directory):
     else:
         return directory
 
+
 def getTemplateKey(dirkey, filename):
     return ":".join([dirkey, filename])
+
 
 class PortletTemplateManagerFactory(object):
     def __init__(self):
@@ -52,7 +55,7 @@ class PortletTemplateManager(object):
                 properties = metadata.getProperties()
                 title = properties.get('title', filename[:-3])
                 self._templates[tmplkey] = (title.decode('utf-8'),
-                                        ViewPageTemplateFile(path))
+                                            ViewPageTemplateFile(path))
                 migration.add_to_migration_map(tmplkey, path)
 
     def unregisterDirectory(self, directory, package):
@@ -66,7 +69,7 @@ class PortletTemplateManager(object):
 
     def hasTemplate(self, path):
         """See interface"""
-        return self._templates.has_key(path)
+        return path in self._templates
 
     def getTemplate(self, path, default=None):
         """See interface"""
@@ -82,7 +85,7 @@ class PortletTemplateManager(object):
 
 def getPortletTemplateManagers(obj):
     """Yields found for obj adapters to IPortletTemplateManager.
-    
+
     obj could ba an object as well as an interface.
     """
     gsm = getGlobalSiteManager()
@@ -90,4 +93,3 @@ def getPortletTemplateManagers(obj):
         if migration.DO_MIGRATE:
             migration.migrate(obj, adapter)
         yield adapter
-

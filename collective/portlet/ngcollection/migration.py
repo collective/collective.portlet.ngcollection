@@ -21,6 +21,7 @@ DO_MIGRATE = True
 SEPEXPR = re.compile(r"[/\\]")
 MIGRATION_MAP = {}
 
+
 class KeyTail(object):
     """Object to save key and tail"""
 
@@ -39,8 +40,8 @@ def add_to_migration_map(key, path):
     """Entry point for the MIGRATION_MAP filling"""
     tail = SEPEXPR.split(path)
     if len(tail) < 2:
-        logger.warn("Problematic path: '%s' (too small path items) "
-                    "to resolve old NG Collector temlate key (%s)" % (path, key))
+        logger.warn("Problematic path: '%s' (too small path items) to "
+                    "resolve old NG Collector temlate key (%s)" % (path, key))
         return
 
     tail.reverse()
@@ -59,26 +60,27 @@ def addToMM(head, keytail, branch):
         # if val is not keytail - this should be :
         #   * or mapping
         #   * or KeyTail type
-        if type(val) is type({}):
+        if isinstance(val, type({})):
             # go into recursion
             newhead = keytail.tail.pop(0)
             addToMM(newhead, keytail, val)
-            
-        elif type(val) is KeyTail:
+
+        elif isinstance(val, KeyTail):
             # This algorythm not review following collisions:
             #  * when tail tuple became empty (it's shouldn't
             #    happen in the case of this product)
             key_val = val.tail.pop(0)
             key_keytail = keytail.tail.pop(0)
             newbranch = {
-                key_val : KeyTail(val.key, val.tail),
-                key_keytail : KeyTail(keytail.key, keytail.tail),
-                }
+                key_val: KeyTail(val.key, val.tail),
+                key_keytail: KeyTail(keytail.key, keytail.tail),
+            }
             branch[head] = newbranch
 
 ###########
 # Migrator
 ###########
+
 
 def migrate(obj, adapter):
     try:
@@ -88,7 +90,8 @@ def migrate(obj, adapter):
             obj.template = new_template
     except:
         logger.warn("Problem when try to migrate from file-system bind "
-            "template key to fs-independent for obj: %s" % str(obj))
+                    "template key to fs-independent for obj: %s" % str(obj))
+
 
 def isOldFashionKey(template):
     # Check is path starts as path from the root in
@@ -96,6 +99,8 @@ def isOldFashionKey(template):
     return template.startswith('/') or template[1] == ':'
 
 _marker = []
+
+
 def getNewFashionKey(old_key):
     res = old_key
 
@@ -104,7 +109,7 @@ def getNewFashionKey(old_key):
     old_key_lst = SEPEXPR.split(old_key)
     old_key_lst.reverse()
     # First key - is tuple of template name and name of parent directory
-    old_key_lst = [tuple(old_key_lst[:2]),] + old_key_lst[2:]
+    old_key_lst = [tuple(old_key_lst[:2]), ] + old_key_lst[2:]
     data = MIGRATION_MAP
     passed_keys = []
     for k in old_key_lst:
@@ -117,12 +122,12 @@ def getNewFashionKey(old_key):
             break
         else:
             passed_keys.append(k)
-            if type(val) == KeyTail:
+            if isinstance(val, KeyTail):
                 res = val.key
                 break
-            elif type(val) == type({}):
+            elif isinstance(val, type({})):
                 data = val
 
-    logger.info("Resolved '%s' file-system path to '%s' template key" % (old_key, res))
+    logger.info("Resolved '%s' file-system path to '%s' template key" %
+                (old_key, res))
     return res
-

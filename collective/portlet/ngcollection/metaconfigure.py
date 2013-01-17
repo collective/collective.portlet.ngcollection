@@ -4,6 +4,7 @@ from zope import component
 from collective.portlet.ngcollection import manager
 from collective.portlet.ngcollection.interfaces import IPortletTemplateManager
 
+
 def handler(directory, interface, package):
     gsm = component.getGlobalSiteManager()
 
@@ -26,10 +27,10 @@ def handler(directory, interface, package):
 
     factory(interface).registerDirectory(directory, package)
 
-   
+
 def portletTemplatesDirective(_context, directory, interface):
     package = _context.package
     _context.action(
-        discriminator = ('portletTemplates', directory, interface, package),
+        discriminator=('portletTemplates', directory, interface, package),
         callable = handler,
-        args = (directory, interface, package ))
+        args = (directory, interface, package))

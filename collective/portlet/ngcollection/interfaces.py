@@ -1,5 +1,6 @@
 from zope import interface
 
+
 class IPortletTemplateManager(interface.Interface):
     """Manages customly registered templates for portlets"""
 
