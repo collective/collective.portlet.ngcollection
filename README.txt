@@ -53,6 +53,6 @@ Contributors
 ------------
 
  * Vitaliy Podoba
- * Roman Kozlovskiy
+ * Roman Kozlovskyi
  * Volodymyr Cherepanyak
 
