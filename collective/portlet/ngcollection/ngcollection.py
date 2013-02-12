@@ -51,15 +51,9 @@ class Assignment(base.Assignment):
     template = u""
     show_more_label = u""
 
-    def __init__(self, header=u"", target_collection=None, limit=None,
-                 random=False, show_more=True, show_dates=False,
-                 template=u"", show_more_label=u""):
-        super(Assignment, self).__init__(header=header, limit=limit,
-                                         target_collection=target_collection,
-                                         random=random, show_more=show_more,
-                                         show_dates=show_dates)
-        self.template = template
-        self.show_more_label = show_more_label
+    def __init__(self, **kwargs):
+        for name, value in kwargs.items():
+            setattr(self, name, value)
 
 
 class Renderer(base.Renderer):

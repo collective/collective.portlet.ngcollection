@@ -1,5 +1,6 @@
 *.py?
 *.pyc
+*.mo
 .DS_Store
 *~
 *.egg-info
