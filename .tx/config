@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.com
+
+[quintagroup.collective-portlet-ngcollection]
+file_filter = collective/portlet/ngcollection/locales/<lang>/LC_MESSAGES/collective.portlet.ngcollection.po
+source_file = collective/portlet/ngcollection/locales/collective.portlet.ngcollection.pot
+source_lang = en
+type = PO
+
