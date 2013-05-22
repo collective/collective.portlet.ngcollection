@@ -1,0 +1,57 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# Translators:
+# Roman Kozlovskiy <krzroman@gmail.com>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: Quintagroup\n"
+"POT-Creation-Date: 2010-05-04 14:35+0000\n"
+"PO-Revision-Date: 2013-05-22 14:19+0000\n"
+"Last-Translator: Roman Kozlovskiy <krzroman@gmail.com>\n"
+"Language-Team: Ukrainian (http://www.transifex.com/projects/p/quintagroup/language/uk/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: collective.portlet.ngcollection\n"
+"Language: uk\n"
+
+#: ./ngcollection.py:96
+msgid "Add NG Collection Portlet"
+msgstr "Додати NG портлет колекцій"
+
+#: ./ngcollection.py:113
+msgid "Edit NG Collection Portlet"
+msgstr "Редагувати NG портлет колекцій"
+
+#: ./ngcollection.py:36
+msgid "Label for Show More link"
+msgstr "Текст для етикетки \"Більше\""
+
+#: ./metadirectives.py:15
+msgid "Portlet type interface"
+msgstr "Інтерфейс типу портлета"
+
+#: ./metadirectives.py:16
+msgid "Should correspond to the public interface of the portlet assignment"
+msgstr "Повинні відповідати публічному інтерфейсу портлета"
+
+#: ./ngcollection.py:35
+msgid "Show More Label"
+msgstr "Показати етикетку \"Більше\""
+
+#: ./ngcollection.py:27
+msgid "Template"
+msgstr "Шаблон"
+
+#: ./ngcollection.py:28
+msgid "Template to use for portlet rendering. If not set then default one will be used."
+msgstr "Шаблон для портлету. Якщо не встановлено, то шаблон за замовчуванням буде використаний."
+
+#: ./ngcollection.py:97
+msgid "This portlet extends standard plone collection portlet with two more extra fields: view_name and show_more_label"
+msgstr "Цей портлет розширює стандартний портлет колекції Plone ще двома додатковими полями: view_name і show_more_label"
+
