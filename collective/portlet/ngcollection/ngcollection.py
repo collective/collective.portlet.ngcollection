@@ -4,6 +4,8 @@ from zope.formlib import form
 from zope.interface import implements
 from zope.component import queryAdapter
 
+from z3c.form import field
+
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.portlet.collection import collection as base
 from plone.app.form.widgets.uberselectionwidget import UberSelectionWidget
@@ -91,6 +93,7 @@ class AddForm(base.AddForm):
     """
     form_fields = form.Fields(INGCollection)
     form_fields['target_collection'].custom_widget = UberSelectionWidget
+    fields = field.Fields(INGCollection)
 
     label = _(u"Add NG Collection Portlet")
     description = _(u"This portlet extends standard plone collection portlet "
@@ -109,6 +112,7 @@ class EditForm(base.EditForm):
     """
     form_fields = form.Fields(INGCollection)
     form_fields['target_collection'].custom_widget = UberSelectionWidget
+    fields = field.Fields(INGCollection)
 
     label = _(u"Edit NG Collection Portlet")
     description = _(u"This portlet extends standard plone collection portlet "
