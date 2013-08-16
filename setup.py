@@ -8,8 +8,8 @@ setup(name='collective.portlet.ngcollection',
       description="Extends plone collection portlet in order to allow "
                   "assigning different views for each newly created "
                   "portlet through it's edit form",
-      long_description=open("README.txt").read() + "\n" +
-      open(os.path.join("docs", "HISTORY.txt")).read(),
+      long_description=open("README.rst").read() + "\n" +
+      open(os.path.join("docs", "HISTORY.rst")).read(),
       classifiers=[
           "Environment :: Web Environment",
           "Framework :: Zope2",
