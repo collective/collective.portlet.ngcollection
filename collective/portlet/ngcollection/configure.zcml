@@ -24,7 +24,7 @@
         interface=".ngcollection.INGCollection"
         assignment=".ngcollection.Assignment"
         view_permission="zope2.View"
-        edit_permission="cmf.ManagePortal"
+        edit_permission="plone.portlet.collection.AddCollectionPortlet"
         renderer=".ngcollection.Renderer"
         addview=".ngcollection.AddForm"
         editview=".ngcollection.EditForm"
