@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.5 (2015-10-27)
+----------------
+
+ * Fixed compatibility with Plone 5
+   [kroman0]
+
 1.4 (2013-08-16)
 ----------------
 

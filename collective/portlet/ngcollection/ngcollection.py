@@ -11,7 +11,10 @@ except ImportError:
 
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.portlet.collection import collection as base
-from plone.app.form.widgets.uberselectionwidget import UberSelectionWidget
+try:
+    from plone.app.form.widgets.uberselectionwidget import UberSelectionWidget
+except ImportError:
+    UberSelectionWidget = None
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
@@ -95,7 +98,8 @@ class AddForm(base.AddForm):
     constructs the assignment that is being added.
     """
     form_fields = form.Fields(INGCollection)
-    form_fields['target_collection'].custom_widget = UberSelectionWidget
+    if UberSelectionWidget:
+        form_fields['target_collection'].custom_widget = UberSelectionWidget
     fields = field and field.Fields(INGCollection)
 
     label = _(u"Add NG Collection Portlet")
@@ -114,7 +118,8 @@ class EditForm(base.EditForm):
     zope.formlib which fields to display.
     """
     form_fields = form.Fields(INGCollection)
-    form_fields['target_collection'].custom_widget = UberSelectionWidget
+    if UberSelectionWidget:
+        form_fields['target_collection'].custom_widget = UberSelectionWidget
     fields = field and field.Fields(INGCollection)
 
     label = _(u"Edit NG Collection Portlet")
