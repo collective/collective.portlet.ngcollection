@@ -41,6 +41,9 @@ setup(name='collective.portlet.ngcollection',
           'setuptools',
           # -*- Extra requirements: -*-
       ],
+      extras_require=dict(test=[
+           'Products.PloneTestCase',
+      ]),
       entry_points="""
       [z3c.autoinclude.plugin]
       target=plone
